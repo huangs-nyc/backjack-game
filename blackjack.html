@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="blackjack.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Caprasimo&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div id="main">
+            <div class="center">
+                <h1 id="title">Blackjack</h1>
+                <h2 id="result">Welcome to the Table!</h2>
+            </div>
+            <div class="display">
+                <div id="text-display">
+                    <h2 id="card-display">CARDS: </h2>
+                    <h2 id="value-display">VALUE: </h2>
+                </div>
+                <div id="button-display">
+                    <button id="ace-one">+1</button>
+                    <button id="ace-eleven">+11</button>
+                </div>
+            </div>
+            <div id="main-btns">
+                <button id="start-btn">START GAME</button>
+                <button id="draw-btn">DRAW NEW CARD</button>
+                <button id="reset-btn">RESET TABLE</button>
+            </div>
+            <div id="money">
+                <div id="money-display">
+                    <h2 id="money-tracker">BALANCE: $500</h2>
+                    <h2 id="bet-tracker">BET AMOUNT: $0</h2>
+                </div>
+                <div id="money-btns">
+                    <button id="plus-fifty">BET $50</button>
+                    <button id="minus-fifty">RETURN $50</button>
+                </div>
+            </div>
+        </div>
+        <script src="blackjack.js"></script>
+    </body>
+</html>
