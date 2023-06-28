@@ -7,34 +7,57 @@
         <link href="https://fonts.googleapis.com/css2?family=Caprasimo&display=swap" rel="stylesheet">
     </head>
     <body>
-        <div id="main">
-            <div class="center">
-                <h1 id="title">Blackjack</h1>
-                <h2 id="result">Welcome to the Table!</h2>
+        <div id="layout">
+            <div id="notes">
+                <h2 class="center"><u>NOTES FOR GAMEPLAY </u>&#128204</h2>
+                <p>
+                    1. Clicking "Reset Table" will refresh your page. <br /> <br />
+                    2. This game follows standard blackjack rules. <br /> <br />
+                    3. You will only be able to bet as much as you have. <br /> <br />
+                    4. If you go bankrupt, you must reset the table. <br /> <br />
+                    5. Dealer cards will only show once you start the game. <br /> <br />
+                    6. Dealer's value of cards will only be revealed once the game ends.<br /> <br />
+                    7. Like a casino, multiple 52 card decks are used; this means
+                    repeat cards are possible.
+                </p>
             </div>
-            <div class="display">
-                <div id="text-display">
-                    <h2 id="card-display">CARDS: </h2>
-                    <h2 id="value-display">VALUE: </h2>
+            <div id="main">
+                <div class="center">
+                    <h1 id="title">Blackjack</h1>
                 </div>
-                <div id="button-display">
-                    <button id="ace-one">+1</button>
-                    <button id="ace-eleven">+11</button>
+                <h2 class="center" id="result">Welcome to the Table!</h2>
+                <div class="display">
+                    <div id="text-display">
+                        <h2 id="card-display">CARDS WILL SHOW HERE </h2>
+                        <h2 id="value-display">VALUE WILL SHOW HERE </h2>
+                    </div>
+                    <div id="button-display">
+                        <button id="ace-one" onclick="aceOne()">+1</button>
+                        <button id="ace-eleven" onclick="aceEleven()">+11</button>
+                    </div>
+                </div>
+                <div id="main-btns">
+                    <button id="start-btn" onclick="start()">START GAME</button>
+                    <button id="hit-btn" onclick="hit()">HIT</button>
+                    <button id="hold-btn" onclick="hold()">HOLD</button>
+                    <button id="reset-btn" onclick="reset()">RESET TABLE</button>
+                </div>
+                <div id="money">
+                    <div id="money-display">
+                        <h2 id="money-tracker">BALANCE: $500</h2>
+                        <h2 id="bet-tracker">BET AMOUNT: $0</h2>
+                    </div>
+                    <div id="money-btns">
+                        <button id="plus-fifty" onclick="bet()">BET $50</button>
+                        <button id="minus-fifty" onclick="returnMoney()">RETURN $50</button>
+                    </div>
                 </div>
             </div>
-            <div id="main-btns">
-                <button id="start-btn">START GAME</button>
-                <button id="draw-btn">DRAW NEW CARD</button>
-                <button id="reset-btn">RESET TABLE</button>
-            </div>
-            <div id="money">
-                <div id="money-display">
-                    <h2 id="money-tracker">BALANCE: $500</h2>
-                    <h2 id="bet-tracker">BET AMOUNT: $0</h2>
-                </div>
-                <div id="money-btns">
-                    <button id="plus-fifty">BET $50</button>
-                    <button id="minus-fifty">RETURN $50</button>
+            <div id="dealer">
+                <h2 class="center" id="dealer-txt">DEALER'S TABLE</h2>
+                <div id="dealer-display">
+                    <h2 id="dealer-cards">CARDS WILL SHOW HERE </h2>
+                    <h2 id="dealer-value">VALUE WILL SHOW HERE </h2>
                 </div>
             </div>
         </div>
