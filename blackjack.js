@@ -56,7 +56,7 @@ btnSwitch(holdEl, false)
 btnSwitch(returnEl, false)
 
 // fn to start game
-function start() { 
+async function start() { 
     cardEl.textContent = ""
     valueEl.textContent = ""
     dealerCardEl.textContent = ""
@@ -70,8 +70,8 @@ function start() {
     btnSwitch(holdEl, true)
     // display two cards
     dealerStart()
-    hit(false)
-    hit(false)
+    await hit(false)
+    hit(true)
 }
 
 function dealerStart() {
@@ -79,8 +79,6 @@ function dealerStart() {
     dealerCardEl.innerHTML += 
     "<span style='font-size: 75px;'>"+backCard+"</span"
     // draw two
-    dealerHit(false)
-    dealerHit(true)
     dealerValueEl.textContent = "UNKNOWN"
 }
 
@@ -117,7 +115,7 @@ function dealerHit(dealerBool) {
 }
 
 function hit(dealerBool) {
-    let tempCardNum = Math.floor(Math.random()*52)
+    let tempCardNum = 0
     // logic for adding value
     if (tempCardNum === 0 || tempCardNum === 13 ||
         tempCardNum === 26 || tempCardNum === 39) {
@@ -200,7 +198,7 @@ function hold() {
     endGame()
 }
 
-function aceOne() {
+async function aceOne() {
     playerValue += 1
     resultEl.textContent = "Hit or Hold?"
     valueEl.innerHTML = playerValue
@@ -222,7 +220,7 @@ function aceOne() {
     }
 }
 
-function aceEleven() {
+async function aceEleven() {
     playerValue += 11
     resultEl.textContent = "Hit or Hold?"
     valueEl.innerHTML = playerValue
