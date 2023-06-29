@@ -14,6 +14,7 @@ let cards = [
     "&#x1F0DE" ] // clubs
 
 let backCard = "&#x1F0A0"
+let statusEl  = document.querySelector("#status-txt")
 
 let playerValue = 0
 let dealerValue = 0
@@ -68,22 +69,62 @@ function start() {
     btnSwitch(hitEl, true)
     btnSwitch(holdEl, true)
     // display two cards
-    dealerCardEl.innerHTML += 
-    "<span style='font-size: 75px;'>"+backCard+"</span"
-    dealerCardEl.innerHTML += 
-    "<span style='font-size: 75px;'>"+
-    cards[Math.floor(Math.random()*52)]+"</span>" // needs to be fixed, here for testing
-    hit()
-    hit()
+    dealerStart()
+    hit(false)
+    hit(false)
 }
 
-function hit() {
+function dealerStart() {
+    // hide card
+    dealerCardEl.innerHTML += 
+    "<span style='font-size: 75px;'>"+backCard+"</span"
+    // draw two
+    dealerHit(false)
+    dealerHit(true)
+    dealerValueEl.textContent = "UNKNOWN"
+}
+
+function dealerHit(dealerBool) {
+    let dealerCardNum = Math.floor(Math.random()*52)
+    if (dealerBool) {
+    dealerCardEl.innerHTML += 
+        "<span style='font-size: 75px;'>"+
+        cards[dealerCardNum]+"</span>"
+    }
+    if (dealerCardNum === 0 || dealerCardNum === 13 ||
+        dealerCardNum === 26 || dealerCardNum === 39) {
+            if (dealerValue + 11 > 21) {
+                dealerValue += 1
+            } else {
+                dealerValue += 11
+            }
+    } else if (dealerCardNum === 9 || dealerCardNum === 10 || dealerCardNum === 11 ||
+        dealerCardNum === 12 || dealerCardNum === 22 || dealerCardNum === 23 ||
+        dealerCardNum === 24 || dealerCardNum === 25 || dealerCardNum === 35 ||
+        dealerCardNum === 36 || dealerCardNum === 37 || dealerCardNum === 38 ||
+        dealerCardNum === 48 || dealerCardNum === 49 || dealerCardNum === 50 ||
+        dealerCardNum === 51) {
+            dealerValue += 10
+    } else if (dealerCardNum > 0 && dealerCardNum < 9) {
+        dealerValue += dealerCardNum + 1
+    } else if (dealerCardNum > 13 & dealerCardNum < 22) {
+        dealerValue += dealerCardNum - 12
+    } else if (dealerCardNum > 26 && dealerCardNum< 35) {
+        dealerValue += dealerCardNum - 25
+    } else if (dealerCardNum > 39 && dealerCardNum < 48) {
+        dealerValue += dealerCardNum - 38
+    }
+}
+
+function hit(dealerBool) {
     let tempCardNum = Math.floor(Math.random()*52)
     // logic for adding value
     if (tempCardNum === 0 || tempCardNum === 13 ||
         tempCardNum === 26 || tempCardNum === 39) {
             resultEl.textContent = "You drew an ace! Pick 1 or 11 for its value."
             cardEl.innerHTML += "<span style='font-size: 75px;'>"+cards[tempCardNum]+"</span>"
+            btnSwitch(hitEl, false)
+            btnSwitch(holdEl, false)
             btnSwitch(aceOneEl, true)
             btnSwitch(aceElevenEl, true)
     } else if (tempCardNum === 9 || tempCardNum === 10 || tempCardNum === 11 ||
@@ -94,18 +135,27 @@ function hit() {
         tempCardNum === 51) {
             playerValue += 10
             cardEl.innerHTML += "<span style='font-size: 75px;'>"+cards[tempCardNum]+"</span>"
+            valueEl.innerHTML = playerValue
     } else if (tempCardNum > 0 && tempCardNum < 9) {
         playerValue += tempCardNum + 1
         cardEl.innerHTML += "<span style='font-size: 75px;'>"+cards[tempCardNum]+"</span>"
+        valueEl.innerHTML = playerValue
     } else if (tempCardNum > 13 & tempCardNum < 22) {
         playerValue += tempCardNum - 12
         cardEl.innerHTML += "<span style='font-size: 75px;'>"+cards[tempCardNum]+"</span>"
+        valueEl.innerHTML = playerValue
     } else if (tempCardNum > 26 && tempCardNum< 35) {
         playerValue += tempCardNum - 25
         cardEl.innerHTML += "<span style='font-size: 75px;'>"+cards[tempCardNum]+"</span>"
+        valueEl.innerHTML = playerValue
     } else if (tempCardNum > 39 && tempCardNum < 48) {
         playerValue += tempCardNum - 38
         cardEl.innerHTML += "<span style='font-size: 75px;'>"+cards[tempCardNum]+"</span>"
+        valueEl.innerHTML = playerValue
+    }
+    // dealer logic
+    if (dealerValue <= 15) {
+        dealerHit(dealerBool)
     }
     // logic for bust, blackjack, or keep going
     if (playerValue < 21) {
@@ -113,12 +163,12 @@ function hit() {
     } else if (playerValue === 21) {
         btnSwitch(hitEl, false)
         btnSwitch(holdEl, false)
-        setTimeout(hold(), 5000)
+        hold()
     } else if (playerValue > 21) {
         resultEl.textContent = "Bust!"
         btnSwitch(hitEl, false)
         btnSwitch(holdEl, false)
-        setTimeout(hold(), 5000)
+        hold()
     }
 }
 
@@ -126,58 +176,91 @@ function hold() {
     if (playerValue === 21) {
         if (playerValue === dealerValue) {
             resultEl.textContent = "It's a tie! Your bet amount is returned."
-            playerValue += betAmount
-            endGame()
+            balance += betAmount
         } else {
-
+            resultEl.textContent = "Blackjack! You win! The dealer pays you your bet amount!"
+            balance += betAmount*2
         }
     }
     if (playerValue === dealerValue) {
         resultEl.textContent = "It's a tie! Your bet amount is returned."
         playerValue += betAmount
-        endGame()
     } else if (playerValue > dealerValue && playerValue < 21) {
         if (playerValue < 21){
             resultEl.textContent = "You win! The dealer pays you your bet amount!"
-        } else if (playerValue === 21) {
-            resultEl.textContent = "Blackjack! You win! The dealer pays your you bet amount!"
         }
-        playerValue += betAmount*2
-        endGame()
+        balance += betAmount*2
     } else if (playerValue < dealerValue || playerValue > 21) {
         if (playerValue > 21) {
             resultEl.textContent = "Bust! You lose! The dealer keeps your bet amount."
         } else {
             resultEl.textContent = "You lose! The dealer keeps your bet amount."
         }
-        endGame()
     }
+    endGame()
 }
 
 function aceOne() {
     playerValue += 1
     resultEl.textContent = "Hit or Hold?"
+    valueEl.innerHTML = playerValue
+    btnSwitch(hitEl, true)
+    btnSwitch(holdEl, true)
     btnSwitch(aceOneEl, false)
-    btnSwitch(aceElevelEl, false)
+    btnSwitch(aceElevenEl, false)
+    if (playerValue < 21) {
+        resultEl.textContent = "Hit or Hold?"
+    } else if (playerValue === 21) {
+        btnSwitch(hitEl, false)
+        btnSwitch(holdEl, false)
+        hold()
+    } else if (playerValue > 21) {
+        resultEl.textContent = "Bust!"
+        btnSwitch(hitEl, false)
+        btnSwitch(holdEl, false)
+        hold()
+    }
 }
 
 function aceEleven() {
     playerValue += 11
     resultEl.textContent = "Hit or Hold?"
+    valueEl.innerHTML = playerValue
+    btnSwitch(hitEl, true)
+    btnSwitch(holdEl, true)
     btnSwitch(aceOneEl, false)
-    btnSwitch(aceElevelEl, false)
+    btnSwitch(aceElevenEl, false)
+    if (playerValue < 21) {
+        resultEl.textContent = "Hit or Hold?"
+    } else if (playerValue === 21) {
+        btnSwitch(hitEl, false)
+        btnSwitch(holdEl, false)
+        hold()
+    } else if (playerValue > 21) {
+        resultEl.textContent = "Bust!"
+        btnSwitch(hitEl, false)
+        btnSwitch(holdEl, false)
+        hold()
+    }
 }
 
 // fn for endgame
 function endGame() {
+    dealerValueEl.innerHTML = dealerValue
+    betAmount = 0
+    betAmountEl.textContent = "BET AMOUNT: $0"
+    balanceEl.innerHTML = "BALANCE: $" + balance
     if (balance > 0) {
         btnSwitch(startEl, true)
         btnSwitch(betEl, true)
         btnSwitch(holdEl, false)
         btnSwitch(hitEl, false)
         startEl.textContent = "START GAME"
+        playerValue = 0
+        dealerValue = 0
     } else if (balance <= 0) {
-        alert("You went bankrupt! Please reset table!")
+        statusEl.innerHTML = "<p>YOU LOST AND WENT BANKRUPT!"+
+            "<br /><br />INELIGIBLE TO KEEP PLAYING, PLEASE RESET TABLE</p>"
     }
 }
 

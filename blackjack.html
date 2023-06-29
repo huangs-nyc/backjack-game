@@ -38,7 +38,7 @@
                 </div>
                 <div id="main-btns">
                     <button id="start-btn" onclick="start()">START GAME</button>
-                    <button id="hit-btn" onclick="hit()">HIT</button>
+                    <button id="hit-btn" onclick="hit(true)">HIT</button>
                     <button id="hold-btn" onclick="hold()">HOLD</button>
                     <button id="reset-btn" onclick="reset()">RESET TABLE</button>
                 </div>
@@ -53,11 +53,18 @@
                     </div>
                 </div>
             </div>
-            <div id="dealer">
-                <h2 class="center" id="dealer-txt">DEALER'S TABLE</h2>
-                <div id="dealer-display">
-                    <h2 id="dealer-cards">CARDS WILL SHOW HERE </h2>
-                    <h2 id="dealer-value">VALUE WILL SHOW HERE </h2>
+            <div id="dealer-game-status">
+                <div id="game-status">
+                    <h2><u>YOUR GAME STATUS</u></h2>
+                    <p id="status-txt">POSITIVE MONEY BALANCE: <br />
+                    <br />ELIGIBLE TO KEEP PLAYING</p>
+                </div>
+                <div id="dealer">
+                    <h2 class="center" id="dealer-txt">DEALER'S TABLE</h2>
+                    <div id="dealer-display">
+                        <h2 id="dealer-cards">CARDS WILL SHOW HERE </h2>
+                        <h2 id="dealer-value">VALUE WILL SHOW HERE </h2>
+                    </div>
                 </div>
             </div>
         </div>
