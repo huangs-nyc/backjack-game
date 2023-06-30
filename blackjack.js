@@ -13,6 +13,8 @@ let cards = [
     "&#x1F0D7", "&#x1F0D8", "&#x1F0D9", "&#x1F0DA", "&#x1F0DB", "&#x1F0DD",
     "&#x1F0DE" ] // clubs
 
+
+let aceBool = false
 let backCard = "&#x1F0A0"
 let statusEl  = document.querySelector("#status-txt")
 
@@ -23,6 +25,9 @@ let cardEl = document.querySelector("#card-display")
 let valueEl = document.querySelector("#value-display")
 let dealerCardEl = document.querySelector("#dealer-cards")
 let dealerValueEl = document.querySelector("#dealer-value")
+
+let dealerFirstCard = ""
+let dealerCurrentHand = ""
 
 // btn-el assignments for ace btns
 let aceOneEl = document.querySelector("#ace-one")
@@ -70,7 +75,13 @@ async function start() {
     btnSwitch(holdEl, true)
     // display two cards
     dealerStart()
-    await hit(false)
+    let tempHitNum = hit(false)
+    if (tempHitNum === 0 || tempHitNum === 13 ||
+        tempHitNum === 26 || tempHitNum === 39) {
+            while (!aceBool) {
+                await new Promise(resolve => setTimeout(resolve, 1))
+            }
+    }
     hit(true)
 }
 
@@ -85,8 +96,14 @@ function dealerStart() {
 function dealerHit(dealerBool) {
     let dealerCardNum = Math.floor(Math.random()*52)
     if (dealerBool) {
-    dealerCardEl.innerHTML += 
+        dealerCardEl.innerHTML += 
         "<span style='font-size: 75px;'>"+
+        cards[dealerCardNum]+"</span>"
+        dealerCurrentHand += 
+        "<span style='font-size: 75px;'>"+
+        cards[dealerCardNum]+"</span>"
+    } else if (!dealerBool) {
+        dealerFirstCard = "<span style='font-size: 75px;'>"+
         cards[dealerCardNum]+"</span>"
     }
     if (dealerCardNum === 0 || dealerCardNum === 13 ||
@@ -115,7 +132,7 @@ function dealerHit(dealerBool) {
 }
 
 function hit(dealerBool) {
-    let tempCardNum = 0
+    let tempCardNum = Math.floor(Math.random()*52)
     // logic for adding value
     if (tempCardNum === 0 || tempCardNum === 13 ||
         tempCardNum === 26 || tempCardNum === 39) {
@@ -168,9 +185,13 @@ function hit(dealerBool) {
         btnSwitch(holdEl, false)
         hold()
     }
+    return tempCardNum
 }
 
 function hold() {
+    if (dealerValue <= 15) {
+        dealerHit(true)
+    }
     if (playerValue === 21) {
         if (playerValue === dealerValue) {
             resultEl.textContent = "It's a tie! Your bet amount is returned."
@@ -198,7 +219,7 @@ function hold() {
     endGame()
 }
 
-async function aceOne() {
+function aceOne() {
     playerValue += 1
     resultEl.textContent = "Hit or Hold?"
     valueEl.innerHTML = playerValue
@@ -218,9 +239,10 @@ async function aceOne() {
         btnSwitch(holdEl, false)
         hold()
     }
+    aceBool = true
 }
 
-async function aceEleven() {
+function aceEleven() {
     playerValue += 11
     resultEl.textContent = "Hit or Hold?"
     valueEl.innerHTML = playerValue
@@ -240,10 +262,13 @@ async function aceEleven() {
         btnSwitch(holdEl, false)
         hold()
     }
+    aceBool = true
 }
 
 // fn for endgame
 function endGame() {
+    // display dealer first card
+    dealerCardEl.innerHTML = dealerFirstCard + dealerCurrentHand
     dealerValueEl.innerHTML = dealerValue
     betAmount = 0
     betAmountEl.textContent = "BET AMOUNT: $0"
