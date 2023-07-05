@@ -1,7 +1,7 @@
 # Blackjack Game
  
 Game built using HTML, CSS, and JavaScript. Fully functional with a dealer
-table to play against. All buttons are functional. More advvanced than previous
+table to play against. All buttons are functional. More advanced than previous
 projects, such as the rock, paper, scissors game.
 
 Instructions: Press "Start Game" to start the game. You will be presented
