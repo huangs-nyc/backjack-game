@@ -42,7 +42,6 @@ let resetEl = document.querySelector("#reset-btn")
 // btn-el assignment for bet and return btns
 let betEl = document.querySelector("#plus-fifty")
 let returnEl = document.querySelector("#minus-fifty")
-
 let resultEl = document.querySelector("#result")
 
 // bools and int for money tracking
@@ -62,6 +61,9 @@ btnSwitch(returnEl, false)
 
 // fn to start game
 async function start() { 
+    dealerCardEl.innerHTML = ""
+    dealerCurrentHand = ""
+    dealerFirstCard = ""
     cardEl.textContent = ""
     valueEl.textContent = ""
     dealerCardEl.textContent = ""
@@ -172,6 +174,7 @@ function hit(dealerBool) {
     if (dealerValue <= 15) {
         dealerHit(dealerBool)
     }
+
     // logic for bust, blackjack, or keep going
     if (playerValue < 21) {
         resultEl.textContent = "Hit or Hold?"
@@ -185,6 +188,7 @@ function hit(dealerBool) {
         btnSwitch(holdEl, false)
         hold()
     }
+
     return tempCardNum
 }
 
@@ -192,26 +196,31 @@ function hold() {
     if (dealerValue <= 15) {
         dealerHit(true)
     }
-    if (playerValue === 21) {
+    if (playerValue > 21 && dealerValue > 21) {
+        resultEl.textContent = "You both busted! The game of Blackjack favors the dealer." +
+        "You lose! The dealer keeps your bet amount."
+    } else if (playerValue === 21) {
         if (playerValue === dealerValue) {
             resultEl.textContent = "It's a tie! Your bet amount is returned."
             balance += betAmount
         } else {
-            resultEl.textContent = "Blackjack! You win! The dealer pays you your bet amount!"
+            resultEl.textContent = "Blackjack! You win! The dealer pays you your bet amount."
             balance += betAmount*2
         }
-    }
-    if (playerValue === dealerValue) {
+    } else if (playerValue === dealerValue) {
         resultEl.textContent = "It's a tie! Your bet amount is returned."
         playerValue += betAmount
     } else if (playerValue > dealerValue && playerValue < 21) {
         if (playerValue < 21){
-            resultEl.textContent = "You win! The dealer pays you your bet amount!"
+            resultEl.textContent = "You win! The dealer pays you your bet amount."
         }
         balance += betAmount*2
     } else if (playerValue < dealerValue || playerValue > 21) {
         if (playerValue > 21) {
             resultEl.textContent = "Bust! You lose! The dealer keeps your bet amount."
+        } else if (dealerValue > 21) {
+            resultEl.textContent = "Dealer bust! You win! The dealer pays you your bet amount."
+            balance += betAmount*2
         } else {
             resultEl.textContent = "You lose! The dealer keeps your bet amount."
         }
