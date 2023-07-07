@@ -1,5 +1,5 @@
 // all cards in 52 card deck
-let cards = [
+const cards = [
     "&#x1F0A1", "&#x1F0A2", "&#x1F0A3", "&#x1F0A4", "&#x1F0A5", "&#x1F0A6",
     "&#x1F0A7", "&#x1F0A8", "&#x1F0A9", "&#x1F0AA", "&#x1F0AB", "&#x1F0AD",
     "&#x1F0AE", // spades
@@ -13,44 +13,45 @@ let cards = [
     "&#x1F0D7", "&#x1F0D8", "&#x1F0D9", "&#x1F0DA", "&#x1F0DB", "&#x1F0DD",
     "&#x1F0DE" ] // clubs
 
+// status of game
+const statusEl  = document.querySelector("#status-txt")
 
-let aceBool = false
-let backCard = "&#x1F0A0"
-let statusEl  = document.querySelector("#status-txt")
-
+// player variables
 let playerValue = 0
-let dealerValue = 0
+const cardEl = document.querySelector("#card-display")
+const valueEl = document.querySelector("#value-display")
 
-let cardEl = document.querySelector("#card-display")
-let valueEl = document.querySelector("#value-display")
-let dealerCardEl = document.querySelector("#dealer-cards")
-let dealerValueEl = document.querySelector("#dealer-value")
-
+// dealer variables
+const dealerCardEl = document.querySelector("#dealer-cards")
+const dealerValueEl = document.querySelector("#dealer-value")
 let dealerFirstCard = ""
 let dealerCurrentHand = ""
+const backCard = "&#x1F0A0"
+let dealerValue = 0
 
-// btn-el assignments for ace btns
-let aceOneEl = document.querySelector("#ace-one")
-let aceElevenEl = document.querySelector("#ace-eleven")
+// btn-el assignments for ace functionality
+const aceOneEl = document.querySelector("#ace-one")
+const aceElevenEl = document.querySelector("#ace-eleven")
+let aceBool = false
 
 // btn-el assignment for start, hit, hold, and reset btns
-let startEl = document.querySelector("#start-btn")
-let hitEl = document.querySelector("#hit-btn")
-let holdEl = document.querySelector("#hold-btn")
-let resetEl = document.querySelector("#reset-btn")
+const startEl = document.querySelector("#start-btn")
+const hitEl = document.querySelector("#hit-btn")
+const holdEl = document.querySelector("#hold-btn")
+const resetEl = document.querySelector("#reset-btn")
 
 // btn-el assignment for bet and return btns
-let betEl = document.querySelector("#plus-fifty")
-let returnEl = document.querySelector("#minus-fifty")
-let resultEl = document.querySelector("#result")
+const betEl = document.querySelector("#plus-fifty")
+const returnEl = document.querySelector("#minus-fifty")
+const resultEl = document.querySelector("#result")
 
 // bools and int for money tracking
 let canBet = true
 let canReturn = false
 let balance = 500
 let betAmount = 0
-let balanceEl = document.querySelector("#money-tracker")
-let betAmountEl = document.querySelector("#bet-tracker")
+const balanceEl = document.querySelector("#money-tracker")
+const betAmountEl = document.querySelector("#bet-tracker")
 
 // initial setup
 btnSwitch(aceOneEl, false)
